@@ -1,52 +1,10 @@
 import React, { useState } from "react";
-import { shuffle } from "lodash";
+
+import { ScoreList } from "../../domain";
+import { PoolList } from "./components/poollist";
+import { generator } from "./generator";
+
 interface Props {}
-
-type ScoreList = Array<[number, number]>;
-
-const generator = (n: number, shuffled: boolean) => {
-  const xs: ScoreList = [];
-
-  for (let l = 0; l <= n; l++) {
-    for (let r = 0; r < l; r++) {
-      xs.push([l, r]);
-      if (l != r) {
-        xs.push([r, l]);
-      }
-    }
-    xs.push([l, l]);
-  }
-
-  if (shuffled) {
-    return shuffle(shuffle(xs));
-  }
-
-  return xs;
-};
-
-interface PoolProps {
-  scores: ScoreList;
-}
-
-const PoolList: React.FC<PoolProps> = (props) => {
-  const rows = props.scores.map((s, i) => {
-    return (
-      <tr>
-        <td>{i + 1}</td>
-        <td>
-          {s[0]} - {s[1]}
-        </td>
-      </tr>
-    );
-  });
-
-  return (
-    <table className="table table-striped">
-      <tbody>{rows}</tbody>
-    </table>
-  );
-};
-
 export const PoolGenerator: React.FC<Props> = (props) => {
   const [maxScore, setScore] = useState<number>(5);
   const [pool, setPool] = useState<ScoreList>([]);
